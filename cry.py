@@ -4,10 +4,9 @@ import discord
 from discord.ext import commands, tasks
 
 
-class GNBot(commands.Cog):
+class CryBot(commands.Cog):
     """
-    Bot object that handles actions on Discord. The primary function is to announce a players judgment in the voice
-    channel.
+    Bot object that handles actions on Discord.
     """
     token = os.environ.get('DISCORD_KEY')
 
@@ -23,17 +22,20 @@ class GNBot(commands.Cog):
         print('Bot online')
 
     @commands.command()
-    async def gn(self, ctx, command):
+    async def cmd(self, ctx, soundbite):
         """
         Announce judgment to the voice channel.
         :param ctx: discord context parameter
+        :param soundbite: the value sent after the command will be the soundbite to play from the Assets directory
         :return: JUDGMENT!
         """
         voice_channel = discord.utils.get(ctx.guild.voice_channels, name='General')
         await voice_channel.connect()
         voice = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
+        file = self._get_file(soundbite)
+
         try:
-            voice.play(discord.FFmpegPCMAudio(f"{command}.mp3"))
+            voice.play(discord.FFmpegPCMAudio(f"Assets/{file}"))
         except PermissionError:
             await ctx.send('Wait for the current playing music to end or use the stop command')
             return
@@ -42,7 +44,13 @@ class GNBot(commands.Cog):
         if voice.is_connected():
             await voice.disconnect()
 
+    @staticmethod
+    def _get_file(soundbite):
+        assets_dir = os.listdir('Assets')
+        file_name = [name for name in assets_dir if soundbite.casefold() in name]
+        return file_name[0]
+
 
 bot = commands.Bot(command_prefix='!')
-bot.add_cog(GNBot(bot))
-bot.run(GNBot.token)
+bot.add_cog(CryBot(bot))
+bot.run(CryBot.token)
