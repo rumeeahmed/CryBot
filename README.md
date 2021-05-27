@@ -18,7 +18,7 @@ for the program to communicate with Discord and the application must be invited 
 it should play sounds on.
 
 ```python
-bot = commands.Bot(command_prefix='c')
+bot = commands.Bot(command_prefix='!')
 bot.add_cog(CryBot(bot))
 bot.run(CryBot.token)
 ```
