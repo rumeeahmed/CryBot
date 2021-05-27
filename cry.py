@@ -1,5 +1,6 @@
 import os
 import time
+import random
 import audioread
 import discord
 from discord.ext import commands
@@ -23,7 +24,7 @@ class CryBot(commands.Cog):
         print('Bot online')
 
     @commands.command()
-    async def cmd(self, ctx, soundbite):
+    async def ri(self, ctx, soundbite):
         """
         Disturb the General channel and emit an unwanted noise.
         :param ctx: discord context parameter
@@ -33,7 +34,12 @@ class CryBot(commands.Cog):
         voice_channel = discord.utils.get(ctx.guild.voice_channels, name='General')
         await voice_channel.connect()
         voice = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
-        file = self._get_file(soundbite)
+
+        soundbite_lower = soundbite.casefold()
+        if soundbite_lower == 'random':
+            file = self._get_random_file(soundbite_lower)
+        else:
+            file = self._get_file(soundbite_lower)
 
         try:
             voice.play(discord.FFmpegPCMAudio(f"Assets/{file}"))
@@ -54,8 +60,19 @@ class CryBot(commands.Cog):
         :return: String object representing the file path of the audio file
         """
         assets_dir = os.listdir('Assets')
-        file_name = [name for name in assets_dir if soundbite.casefold() in name]
+        file_name = [name for name in assets_dir if soundbite in name]
         return file_name[0]
+
+    @staticmethod
+    def _get_random_file(soundbite):
+        """
+        Find the audio file that is associated with the given parameter.
+        :param soundbite: The audio file to find.
+        :return: String object representing the file path of the audio file
+        """
+        assets_dir = os.listdir('Assets')
+        print(random.choice(assets_dir))
+        return random.choice(assets_dir)
 
     @staticmethod
     def _get_audio_duration(filepath: str):
@@ -69,6 +86,6 @@ class CryBot(commands.Cog):
         return duration
 
 
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='c')
 bot.add_cog(CryBot(bot))
 bot.run(CryBot.token)
