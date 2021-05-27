@@ -1,5 +1,6 @@
 import os
 import time
+import audioread
 import discord
 from discord.ext import commands, tasks
 
@@ -24,10 +25,10 @@ class CryBot(commands.Cog):
     @commands.command()
     async def cmd(self, ctx, soundbite):
         """
-        Announce judgment to the voice channel.
+        Disturb the General channel and emit an unwanted noise.
         :param ctx: discord context parameter
         :param soundbite: the value sent after the command will be the soundbite to play from the Assets directory
-        :return: JUDGMENT!
+        :return: Bad bad sounds.
         """
         voice_channel = discord.utils.get(ctx.guild.voice_channels, name='General')
         await voice_channel.connect()
@@ -40,15 +41,32 @@ class CryBot(commands.Cog):
             await ctx.send('Wait for the current playing music to end or use the stop command')
             return
 
-        time.sleep(2)
+        duration = self._get_audio_duration(f"Assets/{file}")
+        time.sleep(duration)
         if voice.is_connected():
             await voice.disconnect()
 
     @staticmethod
     def _get_file(soundbite):
+        """
+        Find the audio file that is associated with the given parameter.
+        :param soundbite: The audio file to find.
+        :return: String object representing the file path of the audio file
+        """
         assets_dir = os.listdir('Assets')
         file_name = [name for name in assets_dir if soundbite.casefold() in name]
         return file_name[0]
+
+    @staticmethod
+    def _get_audio_duration(filepath: str):
+        """
+        Get the duration of the audio file.
+        :param filepath: the location of the audio file.
+        :return: int value of the duration of the audio file in seconds.
+        """
+        with audioread.audio_open(filepath) as audio_file:
+            duration = audio_file.duration
+        return duration
 
 
 bot = commands.Bot(command_prefix='!')
