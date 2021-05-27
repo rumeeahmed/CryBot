@@ -1,0 +1,2 @@
+audioread~=2.1.9
+discord~=1.0.1
