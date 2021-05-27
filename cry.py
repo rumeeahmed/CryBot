@@ -27,7 +27,7 @@ class CryBot(commands.Cog):
     async def cri(self, ctx, soundbite):
         """
         Disturb the General channel and emit an unwanted noise.
-        :param ctx: discord context parameter
+        :param ctx: discord context parameter.
         :param soundbite: the value sent after the command will be the soundbite to play from the Assets directory
         :return: Bad bad sounds.
         """
@@ -37,7 +37,7 @@ class CryBot(commands.Cog):
 
         soundbite_lower = soundbite.casefold()
         if soundbite_lower == 'random':
-            file = self._get_random_file(soundbite_lower)
+            file = self._get_random_file()
         else:
             file = self._get_file(soundbite_lower)
 
@@ -57,18 +57,17 @@ class CryBot(commands.Cog):
         """
         Find the audio file that is associated with the given parameter.
         :param soundbite: The audio file to find.
-        :return: String object representing the file path of the audio file
+        :return: String object representing the file path of the audio file.
         """
         assets_dir = os.listdir('Assets')
         file_name = [name for name in assets_dir if soundbite in name]
         return file_name[0]
 
     @staticmethod
-    def _get_random_file(soundbite):
+    def _get_random_file():
         """
         Find the audio file that is associated with the given parameter.
-        :param soundbite: The audio file to find.
-        :return: String object representing the file path of the audio file
+        :return: String object representing the file path of the audio file.
         """
         assets_dir = os.listdir('Assets')
         return random.choice(assets_dir)
