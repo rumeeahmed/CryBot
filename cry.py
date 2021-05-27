@@ -2,7 +2,7 @@ import os
 import time
 import audioread
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
 
 
 class CryBot(commands.Cog):
@@ -38,7 +38,7 @@ class CryBot(commands.Cog):
         try:
             voice.play(discord.FFmpegPCMAudio(f"Assets/{file}"))
         except PermissionError:
-            await ctx.send('Wait for the current playing music to end or use the stop command')
+            await ctx.send('Wait for the current sound to end, scrote.')
             return
 
         duration = self._get_audio_duration(f"Assets/{file}")
