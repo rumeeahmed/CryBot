@@ -24,7 +24,7 @@ class CryBot(commands.Cog):
         print('Bot online')
 
     @commands.command()
-    async def ri(self, ctx, soundbite):
+    async def cri(self, ctx, soundbite):
         """
         Disturb the General channel and emit an unwanted noise.
         :param ctx: discord context parameter
@@ -71,7 +71,6 @@ class CryBot(commands.Cog):
         :return: String object representing the file path of the audio file
         """
         assets_dir = os.listdir('Assets')
-        print(random.choice(assets_dir))
         return random.choice(assets_dir)
 
     @staticmethod
@@ -86,6 +85,6 @@ class CryBot(commands.Cog):
         return duration
 
 
-bot = commands.Bot(command_prefix='c')
+bot = commands.Bot(command_prefix='!')
 bot.add_cog(CryBot(bot))
 bot.run(CryBot.token)

@@ -33,4 +33,5 @@ Finally, call the run method and then pass through the API key as the parameter.
 To invoke sounds on the Discord server use the command prefix, and the name of the class method in the
 General chat to play the sound file associated with the method. This object takes a parameter after the
 command which is then matched to a sound file in the Assets directory and played back in the General
-voice channel.
+voice channel. In this case `!cri` would invoke the `cri` method and any string after that will be taken
+and matched against the sound files.
