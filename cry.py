@@ -12,7 +12,7 @@ class CryBot(commands.Cog):
     """
     token = os.environ.get('DISCORD_KEY')
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.Cog.listener()
